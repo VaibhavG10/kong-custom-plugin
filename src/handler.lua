@@ -12,15 +12,8 @@ function pluginhandler:new()
 
 -- Main Logic
 function pluginhandler:access(plugin_conf) -- Executed for every request upon it's reception from a client and before it is being proxied to the upstream service.
-
   pluginhandler.super.access(self)
-
-  if not (string.match(plugin_conf.Field1,"") and string.match(plugin_conf.Field2,""))
-    ngx.log(ngx.ERR, plugin_conf.Field1)
-    ngx.log(ngx.ERR, plugin_conf.Field2)
-  else
-    ngx.log(ngx.ERR, "Both Fields Require")
-  end
+  ngx.log(ngx.ERR, "Custom Plugin Execting")
 end
 
 return pluginhandler
