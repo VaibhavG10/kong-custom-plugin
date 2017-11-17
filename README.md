@@ -1,5 +1,5 @@
 # kong-custom-plugin
-Trying to help those people who really want to work with KONG API gateway custom plugin.
+Trying to help people who really want to work with KONG API gateway custom plugin.
 
 ![image](https://user-images.githubusercontent.com/26079118/32907810-620cb910-cb27-11e7-845c-1c32183f4e8c.png)
 
@@ -31,7 +31,7 @@ Check available plugins detail at https://konghq.com/plugins/
     * docker exec -it kong-container-id bash
   
   * Download code 
-    * https://github.com/VaibhavG10/kong-custom-plugin.git
+    * git clone https://github.com/VaibhavG10/kong-custom-plugin.git
   
   * Set Environment Variables
     * export KONG_CUSTOM_PLUGINS="kong-custom-plugin"
@@ -56,8 +56,21 @@ Check available plugins detail at https://konghq.com/plugins/
 	
 	![image](https://user-images.githubusercontent.com/26079118/32963915-8118409c-cbf7-11e7-8f65-7545e27d0f53.png)
 	* Hit Test API
-	  * curl -i -X GET http://<serverIP>:8000/TestUri
+	  * curl -i -X GET http://serverIP:8000/TestUri or Hit on Browser http://serverIP:8000/TestUri
     * Tail Error Log File
 	  * tail -f /usr/local/kong/logs/error.log
 	
 	![image](https://user-images.githubusercontent.com/26079118/32964288-ba325380-cbf8-11e7-8d77-3ec421f4c74c.png)
+	
+* Remove a plugin
+  There are three steps to completely remove a plugin.
+
+    * Remove the plugin from your Kong api configuration. Make sure that it is no longer applied globally nor for any API or consumer. This has to be done only once for the entire Kong cluster, no restart/reload required. This step in itself will make that the plugin is no longer in use. But it remains available and it is still possible to re-apply the plugin.
+
+    * Remove the plugin from the custom_plugins directive (on each Kong node). Make sure to have completed step 1 before doing so. After this step it will be impossible for anyone to re-apply the plugin to any Kong api, consumer, or even globally. This step requires to restart/reload the Kong node to take effect.
+
+    * To remove the plugin thoroughly, delete the plugin-related files from each of the Kong nodes. Make sure to have completed step 2, including restarting/reloading Kong, before deleting the files. If you used LuaRocks to install the plugin, you can do luarocks remove <plugin-name> to remove it
+	
+* Next
+    * You can write your custom bussiness logic at handler.lua file.
+    * You can refer existing official kong plugin code for more detail.
